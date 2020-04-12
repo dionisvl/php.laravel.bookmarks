@@ -28,3 +28,9 @@ if (!function_exists('locateBasePath')) {
 }
 $app->useStoragePath(locateBasePath($app));
 ```
+
+#### Other
+Чтобы создать фабрики, миграции, модели и resource контроллер выполните:
+```
+php artisan make:model Bookmark -a
+```
