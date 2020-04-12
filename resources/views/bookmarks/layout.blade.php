@@ -29,5 +29,36 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/brands.min.js"></script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        /** Найдем все формы удаления в документе и навесим событие */
+        let remove_forms = document.getElementsByClassName('remove_form');
+        for (let remove_form of remove_forms) {
+            remove_form.addEventListener('submit', removeProcess, false);
+        }
+    });
+
+    /**
+     * Добавляем в форму новое поле которое пользователь вводит через prompt и затем сабмитим форму
+     * @param e
+     */
+    function removeProcess(e) {
+        e.preventDefault();
+        // let formData = new FormData(this);
+        // console.log(formData);
+        let token = prompt('Enter password for remove:');
+        //formData.append('token', token);
+
+        let newInput = document.createElement("INPUT");
+        newInput.setAttribute("type", "hidden");
+        newInput.setAttribute("name", "token");
+        newInput.setAttribute("value", token);
+        this.appendChild(newInput);
+        // console.log(this);
+        this.submit();
+    }
+
+</script>
+
 </body>
 </html>

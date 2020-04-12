@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Bookmark extends Model
 {
-    protected $fillable = ['title', 'favicon', 'url_origin', 'meta_description', 'meta_keywords'];
+    protected $fillable = ['title', 'favicon', 'url_origin', 'meta_description', 'meta_keywords', 'token'];
 
     public static function add($fields)
     {

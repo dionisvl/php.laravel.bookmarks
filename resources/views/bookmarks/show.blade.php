@@ -16,7 +16,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Детальная информация о закладке</h3>
                 </div>
-
+                @include('errors')
                 @if($bookmark)
                     <div class="box-body">
                         <div class="col-md-6">
@@ -50,6 +50,13 @@
 
                 <div class="box-footer">
                     <a class="btn btn-info" href="{{route('bookmarks.index')}}">Назад</a>
+                    <form method="POST" class="@if(!empty($bookmark->token)) remove_form @endif"
+                          action="{{route('bookmarks.destroy', ['bookmark' => $bookmark->id])}}">
+                        @method('delete')
+                        @csrf
+                        <button type="submit" onclick='confirm("are you sure?")' class="btn btn-danger delete">Удалить
+                        </button>
+                    </form>
                 </div>
             </div>
             <!-- /.box -->

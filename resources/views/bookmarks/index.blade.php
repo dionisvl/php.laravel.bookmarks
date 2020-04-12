@@ -15,10 +15,8 @@
                 <div class="box-header">
                     <h3 class="box-title">Список всех закладок</h3>
                 </div>
+                @include('errors')
                 <!-- /.box-header -->
-                <style>
-
-                </style>
                 <div class="box-body">
                     <div class="form-group">
                         <a href="{{route('bookmarks.create')}}" class="btn btn-success">Добавить</a>
@@ -49,12 +47,11 @@
                                             class="fas fa-external-link-alt"></i></a>
                                     <a href="{{route('bookmarks.edit', $bookmark->id)}}"><i
                                             class="fas fa-pencil-alt"></i></a>
-                                    <form method="POST"
+                                    <form method="POST" class="@if(!empty($bookmark->token)) remove_form @endif"
                                           action="{{route('bookmarks.destroy', ['bookmark' => $bookmark->id])}}">
                                         @method('delete')
                                         @csrf
-                                        {{--<meta name="csrf-token" content="{{ csrf_token() }}">--}}
-                                        <button onclick="return confirm('are you sure?')" type="submit" class="delete">
+                                        <button type="submit" onclick='confirm("are you sure?")' class="delete">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>

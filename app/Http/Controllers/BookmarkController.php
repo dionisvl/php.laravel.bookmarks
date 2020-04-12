@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Bookmark;
 use App\Helpers\ExcelUnload;
+use App\Helpers\Security;
 use App\Helpers\XpathParser;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
@@ -69,7 +71,8 @@ class BookmarkController extends Controller
             'favicon' => $parser->getLink($parser->get('//link[@rel="icon" or @rel="shortcut icon"]', 'href')),
             'meta_description' => mb_strimwidth($parser->get('/html/head/meta[@name="description"]', 'content'), 0, 252, "..."),
             'meta_keywords' => $parser->get('/html/head/meta[@name="keywords"]', 'content'),
-            'url_origin' => $parser->bookmark_url
+            'url_origin' => $parser->bookmark_url,
+            'token' => $request->token ? Security::hmac($request->token) : ''
         ];
 
         //Добавим к запросу все нужные поля
@@ -124,14 +127,21 @@ class BookmarkController extends Controller
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $this->validate($request, [
             'title' => 'required',
-            'url_origin' => ['required', 'unique:bookmarks', 'url', 'active_url']
+            'url_origin' => ['required', 'url', 'active_url']
         ]);
 
         $bookmark = Bookmark::find($id);
+
+        $new_fields = [
+            'token' => $request->token ? Security::hmac($request->token) : ''
+        ];
+        //Добавим к запросу все нужные поля
+        $request->request->add($new_fields);
+
         $bookmark->edit($request->all());
         if (!empty($request->file('image'))) {
             $bookmark->uploadImage($request->file('image'));
@@ -146,9 +156,23 @@ class BookmarkController extends Controller
      * @param int $id
      * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        Bookmark::find($id)->remove();
+        $token = request()->token ?? '';
+
+        $bookmark = Bookmark::find($id);
+        $oldTokenHash = $bookmark->token;
+        $newTokenHash = Security::hmac($token);
+        if ($oldTokenHash != $newTokenHash) {
+            return Redirect::back()->withErrors([
+                "1" => "Error! remove-token mismatch",
+//                "2" => "oldTokenHash - $oldTokenHash",
+//                "3" => "new token - $token; newTokenHash - $newTokenHash"
+            ]);
+        }
+
+        $bookmark->remove();
+
         return redirect()->route('bookmarks.index');
     }
 

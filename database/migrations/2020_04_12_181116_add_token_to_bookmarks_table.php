@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSlugToBookmarksTable extends Migration
+class AddTokenToBookmarksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddSlugToBookmarksTable extends Migration
     public function up()
     {
         Schema::table('bookmarks', function (Blueprint $table) {
-            $table->string('slug')->nullable();
+            $table->string('token')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddSlugToBookmarksTable extends Migration
     public function down()
     {
         Schema::table('bookmarks', function (Blueprint $table) {
-            $table->dropColumn('slug');
+            $table->dropColumn('token');
         });
     }
 }

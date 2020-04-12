@@ -44,6 +44,10 @@
                                 <label for="meta_keywords">meta_keywords</label>
                                 <input type="text" class="form-control" id="meta_keywords" name="meta_keywords"
                                        value="{{$bookmark->meta_keywords}}">
+
+                                <label for="token">Пароль для удаления закладки</label>
+                                <input type="password" class="form-control" id="token" name="token"
+                                       value="{{$bookmark->token}}">
                             </div>
                         </div>
                     </div>
@@ -51,7 +55,7 @@
                         <button class="btn btn-warning pull-right">Изменить</button>
                     </div>
                 </div>
-                <!-- /.box -->
+                    <!-- /.box -->
             </form>
         </section>
         <!-- /.content -->

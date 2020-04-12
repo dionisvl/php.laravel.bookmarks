@@ -21,9 +21,13 @@
                     <div class="box-body">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="url_origin">URL новой закладки</label>
+                                <label for="url_origin">URL новой закладки*</label>
                                 <input type="text" class="form-control" id="url_origin" name="url_origin"
                                        value="{{old('url_origin')}}" required>
+
+                                <label for="token">Пароль для удаления закладки(не обязательно)</label>
+                                <input type="password" class="form-control" id="token" name="token"
+                                       value="{{old('token')}}">
                             </div>
                         </div>
                     </div>
