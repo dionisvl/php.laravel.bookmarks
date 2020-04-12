@@ -45,10 +45,18 @@ class BookmarkController extends Controller
     {
         $this->validate($request, [
             //'title' => 'required',
-            'url_origin' => ['required', 'unique:bookmarks', 'url']
+            'url_origin' => ['required', 'unique:bookmarks', 'url', 'active_url']
         ]);
 
-        $parser = new XpathParser($request->url_origin);
+        $url_origin = $request->url_origin;
+        $http_code = $this->url_test($url_origin);
+        if (($http_code == "200") || ($http_code == "302")) {
+            //dd($http_code);
+        } else {
+            return redirect('bookmarks/create')->withErrors(["1_error" => "Ошибка! сервер $url_origin вернул код ошибки: $http_code"]);
+        }
+
+        $parser = new XpathParser($url_origin);
         $new_fields = [
             'title' => $parser->get('/html/head/title'),
             'favicon' => $parser->getLink($parser->get('//link[@rel="icon" or @rel="shortcut icon"]', 'href')),
@@ -62,6 +70,19 @@ class BookmarkController extends Controller
         //dd($request->all());
         $bookmark = Bookmark::add($request->all());
         return redirect()->route('bookmarks.show', ['bookmark' => $bookmark->id]);
+    }
+
+    private function url_test(string $url): int
+    {
+        $timeout = 10;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        $http_respond = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return $http_code;
     }
 
     /**
@@ -100,7 +121,7 @@ class BookmarkController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'url_origin' => ['required', 'unique:bookmarks', 'url']
+            'url_origin' => ['required', 'unique:bookmarks', 'url', 'active_url']
         ]);
 
         $bookmark = Bookmark::find($id);
