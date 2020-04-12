@@ -19,9 +19,14 @@ class BookmarkController extends Controller
      */
     public function index()
     {
-        $bookmarks = Bookmark::orderBy('created_at', 'DESC')->paginate(5);
+        $orderBy = request()->orderBy ?? 'created_at';
+        $orderDirection = request()->orderDirection ?? 'desc';
+        $newOrderDirection = ($orderDirection == 'desc') ? 'asc' : 'desc';
+        $faOrderDirection = ($orderDirection == 'desc') ? 'up' : 'down-alt';
 
-        return view('bookmarks.index', ['bookmarks' => $bookmarks]);
+        $bookmarks = Bookmark::orderBy($orderBy, $orderDirection)->paginate(5);
+
+        return view('bookmarks.index', compact('bookmarks', 'orderBy', 'faOrderDirection', 'newOrderDirection'));
     }
 
     /**

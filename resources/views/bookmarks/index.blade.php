@@ -16,6 +16,9 @@
                     <h3 class="box-title">Список всех закладок</h3>
                 </div>
                 <!-- /.box-header -->
+                <style>
+
+                </style>
                 <div class="box-body">
                     <div class="form-group">
                         <a href="{{route('bookmarks.create')}}" class="btn btn-success">Добавить</a>
@@ -23,10 +26,10 @@
                     <table id="data_table" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th>Дата добавления</th>
+                            <th>Дата добавления @include('components.order', ['thisOrderBy' => 'created_at'])</th>
                             <th>Favicon</th>
-                            <th>URL страницы</th>
-                            <th>Заголовок страницы</th>
+                            <th>URL страницы @include('components.order', ['thisOrderBy' => 'url_origin'])</th>
+                            <th>Заголовок страницы @include('components.order', ['thisOrderBy' => 'title'])</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
