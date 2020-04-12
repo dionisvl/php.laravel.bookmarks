@@ -12,12 +12,12 @@
         <section class="content">
             <form method="POST" action="{{route('bookmarks.update', ['bookmark' => $bookmark->id])}}">
                 @method('PUT')
-                <meta name="csrf-token" content="{{ csrf_token() }}">
+                @csrf
                 <!-- Default box -->
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">Обновляем закладку</h3>
-                        @include('admin.errors')
+                        @include('errors')
                     </div>
                     <div class="box-body">
                         <div class="col-md-6">
@@ -26,17 +26,16 @@
                                 <input type="text" class="form-control" id="title" name="title"
                                        value="{{$bookmark->title}}" required>
 
-                                <label for="slug">Код</label>
-                                <input type="text" class="form-control" id="slug" name="slug"
-                                       value="{{$bookmark->slug}}">
-
                                 <label for="url_origin">URL</label>
                                 <input type="text" class="form-control" id="url_origin" name="url_origin"
                                        value="{{$bookmark->url_origin}}">
 
-                                <img src="{{$bookmark->getImage('favicon')}}" class="img-responsive" width="64" alt="">
-                                <label for="favicon">favicon</label>
-                                <input type="file" id="favicon" name="favicon">
+                                <label for="favicon">favicon:</label>
+                                <div class="border border-primary rounded">
+                                    <img src="{{$bookmark->favicon}}" class="img-responsive" width="64" alt="">
+                                    <input type="text" class="form-control" id="favicon" name="favicon"
+                                           value="{{$bookmark->favicon}}">
+                                </div>
 
                                 <label for="meta_description">meta_description</label>
                                 <input type="text" class="form-control" id="meta_description" name="meta_description"

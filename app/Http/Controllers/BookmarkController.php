@@ -45,12 +45,10 @@ class BookmarkController extends Controller
     {
         $this->validate($request, [
             //'title' => 'required',
-            'url_origin' => ['required', 'unique:bookmarks']
+            'url_origin' => ['required', 'unique:bookmarks', 'url']
         ]);
 
         $parser = new XpathParser($request->url_origin);
-//        dd($parser->xml);
-        // dd($parser->getLink($parser->get('/html/head/link[@rel="icon" or @rel="shortcut icon"]', 'href')));
         $new_fields = [
             'title' => $parser->get('/html/head/title'),
             'favicon' => $parser->getLink($parser->get('//link[@rel="icon" or @rel="shortcut icon"]', 'href')),
@@ -61,13 +59,8 @@ class BookmarkController extends Controller
 
         //Добавим к запросу все нужные поля
         $request->request->add($new_fields);
-
-//        dd($request->all());
+        //dd($request->all());
         $bookmark = Bookmark::add($request->all());
-        if (!empty($request->file('image'))) {
-            $bookmark->uploadImage($request->file('image'));
-        }
-
         return redirect()->route('bookmarks.show', ['bookmark' => $bookmark->id]);
     }
 
@@ -106,7 +99,8 @@ class BookmarkController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'title' => 'required'
+            'title' => 'required',
+            'url_origin' => ['required', 'unique:bookmarks', 'url']
         ]);
 
         $bookmark = Bookmark::find($id);

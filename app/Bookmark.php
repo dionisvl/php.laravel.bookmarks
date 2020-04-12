@@ -35,4 +35,12 @@ class Bookmark extends Model
 //        $this->removeImage('favicon');
         $this->delete();
     }
+
+    public function edit($fields)
+    {
+        $this->fill($fields);
+        $this->slug = static::getSlug($fields['title']);
+        $this->save();
+    }
+
 }
