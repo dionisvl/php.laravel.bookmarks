@@ -34,29 +34,27 @@
                         @foreach($bookmarks as $bookmark)
                             <tr>
                                 <td>{{$bookmark->created_at}}</td>
-                                <td><img src="" alt="{{$bookmark->favicon}}" width="64"></td>
-                                <td>{{$bookmark->url_origin}}</td>
+                                <td><img src="{{$bookmark->favicon}}" alt="{{$bookmark->favicon}}" width="32"></td>
+                                <td>
+                                    <a href="{{$bookmark->url_origin}}" target="_blank">{{$bookmark->url_origin}}</a>
+                                </td>
                                 <td>
                                     <a href="{{route('bookmarks.show', ['bookmark' => $bookmark->id])}}">{{$bookmark->title}}</a>
                                 </td>
-                                <td>
+                                <td style="display: flex;">
+                                    <a href="{{route('bookmarks.show', ['bookmark' => $bookmark->id])}}"><i
+                                            class="fas fa-external-link-alt"></i></a>
                                     <a href="{{route('bookmarks.edit', $bookmark->id)}}"><i
                                             class="fas fa-pencil-alt"></i></a>
-
                                     <form method="POST"
                                           action="{{route('bookmarks.destroy', ['bookmark' => $bookmark->id])}}">
                                         @method('delete')
                                         @csrf
                                         {{--<meta name="csrf-token" content="{{ csrf_token() }}">--}}
-
                                         <button onclick="return confirm('are you sure?')" type="submit" class="delete">
                                             <i class="fas fa-trash"></i>
                                         </button>
-
                                     </form>
-
-                                    <a href="{{route('bookmarks.show', ['bookmark' => $bookmark->id])}}"><i
-                                            class="fas fa-external-link-alt"></i></a>
                                 </td>
                             </tr>
                         @endforeach

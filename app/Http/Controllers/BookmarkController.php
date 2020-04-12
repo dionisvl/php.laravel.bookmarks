@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Bookmark;
+use App\Helpers\XpathParser;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -43,15 +44,31 @@ class BookmarkController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'url_origin' => 'required'
+            //'title' => 'required',
+            'url_origin' => ['required', 'unique:bookmarks']
         ]);
 
+        $parser = new XpathParser($request->url_origin);
+//        dd($parser->xml);
+        // dd($parser->getLink($parser->get('/html/head/link[@rel="icon" or @rel="shortcut icon"]', 'href')));
+        $new_fields = [
+            'title' => $parser->get('/html/head/title'),
+            'favicon' => $parser->getLink($parser->get('//link[@rel="icon" or @rel="shortcut icon"]', 'href')),
+            'meta_description' => mb_strimwidth($parser->get('/html/head/meta[@name="description"]', 'content'), 0, 252, "..."),
+            'meta_keywords' => $parser->get('/html/head/meta[@name="keywords"]', 'content'),
+            'url_origin' => $parser->bookmark_url
+        ];
+
+        //Добавим к запросу все нужные поля
+        $request->request->add($new_fields);
+
+//        dd($request->all());
         $bookmark = Bookmark::add($request->all());
         if (!empty($request->file('image'))) {
             $bookmark->uploadImage($request->file('image'));
         }
 
-        return redirect()->route('bookmarks.index');
+        return redirect()->route('bookmarks.show', ['bookmark' => $bookmark->id]);
     }
 
     /**

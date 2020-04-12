@@ -11,7 +11,7 @@
         <!-- Main content -->
         <section class="content">
             <form method="POST" action="{{route('bookmarks.store')}}">
-                <meta name="csrf-token" content="{{ csrf_token() }}">
+                @csrf
 
                 <div class="box">
                     <div class="box-header with-border">

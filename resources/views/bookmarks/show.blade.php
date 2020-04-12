@@ -25,10 +25,6 @@
                                 <div type="text" class="border border-primary rounded" id="title"
                                      name="title">{{$bookmark->title}}</div>
 
-                                <label for="slug">Код</label>
-                                <div type="text" class="border border-primary rounded" id="slug"
-                                     name="slug">{{$bookmark->slug}}</div>
-
                                 <label for="url_origin">URL</label>
                                 <div type="text" class="border border-primary rounded" id="url_origin"
                                      name="url_origin"><a href="{{$bookmark->url_origin}}"
@@ -36,7 +32,7 @@
 
                                 <label for="favicon">favicon</label>
                                 <div type="file" id="favicon" name="favicon" class="border border-primary rounded">
-                                    <img src="" id="favicon" class="img-responsive" width="64"
+                                    <img src="{{$bookmark->favicon}}" id="favicon" class="img-responsive" width="64"
                                          alt="{{$bookmark->favicon}}">
                                 </div>
 
