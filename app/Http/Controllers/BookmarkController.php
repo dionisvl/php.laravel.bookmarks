@@ -3,83 +3,113 @@
 namespace App\Http\Controllers;
 
 use App\Bookmark;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class BookmarkController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function index()
     {
-        //
+        $bookmarks = Bookmark::orderBy('created_at', 'DESC')->get();
+
+        return view('bookmarks.index', ['bookmarks' => $bookmarks]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function create()
     {
-        //
+        return view('bookmarks.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'url_origin' => 'required'
+        ]);
+
+        $bookmark = Bookmark::add($request->all());
+        if (!empty($request->file('image'))) {
+            $bookmark->uploadImage($request->file('image'));
+        }
+
+        return redirect()->route('bookmarks.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Bookmark $bookmark
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Factory|View
      */
-    public function show(Bookmark $bookmark)
+    public function show($id)
     {
-        //
+        $bookmark = Bookmark::find($id);
+        return view('bookmarks.show', ['bookmark' => $bookmark]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Bookmark $bookmark
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Factory|View
      */
-    public function edit(Bookmark $bookmark)
+    public function edit($id)
     {
-        //
+        $bookmark = Bookmark::find($id);
+        return view('bookmarks.edit', ['bookmark' => $bookmark]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Bookmark $bookmark
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function update(Request $request, Bookmark $bookmark)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required'
+        ]);
+
+        $bookmark = Bookmark::find($id);
+        $bookmark->edit($request->all());
+        if (!empty($request->file('image'))) {
+            $bookmark->uploadImage($request->file('image'));
+        }
+
+        return redirect()->route('bookmarks.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Bookmark $bookmark
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function destroy(Bookmark $bookmark)
+    public function destroy($id)
     {
-        //
+        Bookmark::find($id)->remove();
+        return redirect()->route('bookmarks.index');
     }
 }
