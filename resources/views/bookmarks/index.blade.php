@@ -68,7 +68,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-body">
-                    <a href="/bookmarks/download">
+                    <a href="/bookmarks/unload">
                         <i class="fas fa-file-excel"></i> Скачать в EXCEL <i class="fas fa-file-download"></i>
                     </a>
                 </div>

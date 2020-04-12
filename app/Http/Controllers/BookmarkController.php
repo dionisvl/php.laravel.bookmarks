@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Bookmark;
+use App\Helpers\ExcelUnload;
 use App\Helpers\XpathParser;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use PhpOffice\PhpSpreadsheet\Writer\Exception;
 
 class BookmarkController extends Controller
 {
@@ -148,5 +150,18 @@ class BookmarkController extends Controller
     {
         Bookmark::find($id)->remove();
         return redirect()->route('bookmarks.index');
+    }
+
+    /**
+     * Выгрузим все элементы в эксель файл
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function unload()
+    {
+        $bookmarks = Bookmark::orderBy('updated_at', 'DESC')->get();
+        $bookmarks = $bookmarks->toArray();
+
+        ExcelUnload::arrayToExcel($bookmarks);
     }
 }
