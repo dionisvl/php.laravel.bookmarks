@@ -22,33 +22,39 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <div type="text" class="form-control" id="title" name="title">{{$bookmark->title}}</div>
+                                <div type="text" class="border border-primary rounded" id="title"
+                                     name="title">{{$bookmark->title}}</div>
 
                                 <label for="slug">Код</label>
-                                <div type="text" class="form-control" id="slug" name="slug">{{$bookmark->slug}}</div>
+                                <div type="text" class="border border-primary rounded" id="slug"
+                                     name="slug">{{$bookmark->slug}}</div>
 
                                 <label for="url_origin">URL</label>
-                                <div type="text" class="form-control" id="url_origin"
-                                     name="url_origin">{{$bookmark->url_origin}}</div>
+                                <div type="text" class="border border-primary rounded" id="url_origin"
+                                     name="url_origin"><a href="{{$bookmark->url_origin}}"
+                                                          target="_blank">{{$bookmark->url_origin}}</a></div>
 
                                 <label for="favicon">favicon</label>
-                                <div type="file" id="favicon" name="favicon">
-                                    <img src="{{$bookmark->getImage('favicon')}}" id="favicon" class="img-responsive"
-                                         width="64" alt="">
+                                <div type="file" id="favicon" name="favicon" class="border border-primary rounded">
+                                    <img src="" id="favicon" class="img-responsive" width="64"
+                                         alt="{{$bookmark->favicon}}">
                                 </div>
 
                                 <label for="meta_description">meta_description</label>
-                                <div type="text" class="form-control" id="meta_description"
+                                <div type="text" class="border border-primary rounded" id="meta_description"
                                      name="meta_description">{{$bookmark->meta_description}}</div>
 
                                 <label for="meta_keywords">meta_keywords</label>
-                                <div type="text" class="form-control" id="meta_keywords"
+                                <div type="text" class="border border-primary rounded" id="meta_keywords"
                                      name="meta_keywords">{{$bookmark->meta_keywords}}</div>
                             </div>
                         </div>
                     </div>
                 @endif
 
+                <div class="box-footer">
+                    <a class="btn btn-info" href="{{route('bookmarks.index')}}">Назад</a>
+                </div>
             </div>
             <!-- /.box -->
         </section>

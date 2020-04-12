@@ -34,3 +34,8 @@ $app->useStoragePath(locateBasePath($app));
 ```
 php artisan make:model Bookmark -a
 ```
+Чтобы нагенерировать фейковых ссылок:
+```
+php artisan tinker
+factory(App\Bookmark::class, 3)->create(); 
+```
