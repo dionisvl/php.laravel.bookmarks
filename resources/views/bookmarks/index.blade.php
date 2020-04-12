@@ -60,6 +60,8 @@
                         @endforeach
                         </tbody>
                     </table>
+
+                    {{ $bookmarks->links() }}
                 </div>
                 <!-- /.box-body -->
                 <div class="box-body">
