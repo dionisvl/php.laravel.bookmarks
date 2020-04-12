@@ -8,6 +8,16 @@
             <h1>Закладки</h1>
         </section>
 
+        <!-- Search form -->
+        <form method="POST" action="{{route('bookmarks_search')}}"
+              class="form-inline d-flex justify-content-center md-form form-sm mt-0">
+            @csrf
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
+                   aria-label="Search" name="search">
+        </form>
+
+
         <!-- Main content -->
         <section class="content">
             <!-- Default box -->
@@ -15,8 +25,8 @@
                 <div class="box-header">
                     <h3 class="box-title">Список всех закладок</h3>
                 </div>
-                @include('errors')
-                <!-- /.box-header -->
+            @include('errors')
+            <!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group">
                         <a href="{{route('bookmarks.create')}}" class="btn btn-success">Добавить</a>

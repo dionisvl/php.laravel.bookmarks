@@ -2,6 +2,40 @@
 
 #BookMarks
 
+## How to Install
+
+- git clone THIS_REPO
+- cp .env.example .env
+- composer install
+- php artisan key:generate
+- create empty DB and config it into .env
+- php artisan migrate
+- `cd /var/www/THIS_SITE/html/` AND `cp -R storage ../`
+- php artisan storage:link
+
+```
+sudo chmod -R 777 /var/www/THIS_SITE/{\
+storage/framework/cache,\
+storage/framework/views,\
+storage/framework/sessions,\
+bootstrap/cache}
+```
+
+## Высокопроизводительный поиск
+Рассчитан на количество записей в БД до 100 000 в условиях высокой нагрузки  
+
+Для Scout + Algolia не забудьте установить ваши ALGOLIA_APP_ID и ALGOLIA_SECRET в файл .env  
+
+Если вы уже установили Scout тогда можно добавить вашу модель в поисковой индекс:  
+```
+php artisan scout:import "App\Bookmark"
+```
+Чтобы удалить все записи модели из поискового индекса выполните:
+```
+php artisan scout:flush "App\Bookmark"
+```
+Так же выполните другие инструкции по адресу: 
+https://laravel.com/docs/7.x/scout  
 
 ## CI/CD fix:
 - create the symbolic link in public directory:  
@@ -34,7 +68,7 @@ $app->useStoragePath(locateBasePath($app));
 ```
 php artisan make:model Bookmark -a
 ```
-Чтобы нагенерировать фейковых ссылок:
+Чтобы нагенерировать фейковых закладок:
 ```
 php artisan tinker
 factory(App\Bookmark::class, 3)->create(); 

@@ -188,4 +188,23 @@ class BookmarkController extends Controller
 
         ExcelUnload::arrayToExcel($bookmarks);
     }
+
+    /**
+     * Поиск с ипользованием Laravel Scout + Algolia
+     * https://laravel.com/docs/7.x/scout
+     * https://www.algolia.com/
+     * @param Request $request
+     * @return Factory|View
+     */
+    public function search(Request $request)
+    {
+        $orderBy = request()->orderBy ?? 'created_at';
+        $orderDirection = request()->orderDirection ?? 'desc';
+        $newOrderDirection = ($orderDirection == 'desc') ? 'asc' : 'desc';
+        $faOrderDirection = ($orderDirection == 'desc') ? 'up' : 'down-alt';
+
+        $bookmarks = Bookmark::search($request->search)->orderBy($orderBy, $orderDirection)->paginate(5);
+
+        return view('bookmarks.index', compact('bookmarks', 'orderBy', 'faOrderDirection', 'newOrderDirection'));
+    }
 }

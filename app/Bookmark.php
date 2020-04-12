@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Bookmark extends Model
 {
+    use Searchable;
+
     protected $fillable = ['title', 'favicon', 'url_origin', 'meta_description', 'meta_keywords', 'token'];
 
     public static function add($fields)
@@ -43,4 +46,25 @@ class Bookmark extends Model
         $this->save();
     }
 
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'bookmarks_index';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+        // Customize array...
+        return $array;
+    }
 }

@@ -17,6 +17,7 @@ Route::get('/', function () {
     return redirect('bookmarks');
 });
 
+Route::post('/bookmarks/search', ['as' => 'bookmarks_search', 'uses' => BookmarkController::class . '@search']);
 Route::get('/bookmarks/unload', ['as' => 'bookmarks_download', 'uses' => BookmarkController::class . '@unload']);
 Route::resource('/bookmarks', 'BookmarkController');
 
