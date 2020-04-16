@@ -18,7 +18,7 @@ sudo chmod -R 777 /var/www/THIS_SITE/{\
 storage/framework/cache,\
 storage/framework/views,\
 storage/framework/sessions,\
-bootstrap/cache}
+html/bootstrap/cache}
 ```
 
 ## Высокопроизводительный поиск
