@@ -4,11 +4,29 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Laravel\Scout\Searchable;
+
+//use Laravel\Scout\Searchable;
+use ScoutElastic\Searchable;
+
 
 class Bookmark extends Model
 {
     use Searchable;
+
+    protected $indexConfigurator = BookmarkIndexConfigurator::class;
+
+    protected $searchRules = [BookmarkSearchRule::class];
+
+    // Here you can specify a mapping for model fields
+    protected $mapping = [
+        'properties' =>
+            [
+                'title' => ['type' => 'text'],
+                'url_origin' => ['type' => 'text'],
+                'meta_description' => ['type' => 'text'],
+                'meta_keywords' => ['type' => 'text'],
+            ]
+    ];
 
     protected $fillable = ['title', 'favicon', 'url_origin', 'meta_description', 'meta_keywords', 'token'];
 
@@ -53,7 +71,7 @@ class Bookmark extends Model
      */
     public function searchableAs()
     {
-        return 'bookmarks_index';
+        return 'bookmark_index';
     }
 
     /**

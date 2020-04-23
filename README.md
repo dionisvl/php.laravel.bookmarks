@@ -37,6 +37,25 @@ php artisan scout:flush "App\Bookmark"
 Так же выполните другие инструкции по адресу: 
 https://laravel.com/docs/7.x/scout  
 
+### Как настроить Laravel Scout + Elasticsearch driver ?
+- Установите куда-нибудь сервер эластика с помощью докера:
+```
+docker pull docker.elastic.co/elasticsearch/elasticsearch:7.6.2  
+docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.6.2  
+```
+
+- Прописать адрес сервера эластика в .env файл:      
+    `SCOUT_ELASTIC_HOST=88.44.55.99:9200`
+
+- Установить Elasticsearch driver по инструкции: https://github.com/babenkoivan/scout-elasticsearch-driver
+
+- Если обновились настройки схемы данных для поиска, тогда выполните:  
+`php artisan elastic:update-mapping "App\Bookmark"`
+- Для создания конфигуратора индекса выполните:  
+`php artisan elastic:create-index "App\BookmarkIndexConfigurator"`
+- Для отправки индекса на сервер эластика выполните:  
+`php artisan scout:import "App\Bookmark"`
+
 ## CI/CD fix:
 - create the symbolic link in public directory:  
 ```php artisan storage:link```

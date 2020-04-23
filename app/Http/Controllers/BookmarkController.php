@@ -190,9 +190,8 @@ class BookmarkController extends Controller
     }
 
     /**
-     * Поиск с ипользованием Laravel Scout + Algolia
+     * Поиск с ипользованием Laravel Scout
      * https://laravel.com/docs/7.x/scout
-     * https://www.algolia.com/
      * @param Request $request
      * @return Factory|View
      */
