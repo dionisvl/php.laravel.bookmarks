@@ -1,6 +1,8 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
-
-#BookMarks
+# BookMarks
+Демо приложение, позволяет создавать и изменять закладки, пользователь-админ может редактировать и удалять все закладки  
+- bookmarks management
+- XpathParser for getting real favicon url and save to DB
+- highload search example and template app
 
 ## How to Install
 
