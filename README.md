@@ -16,7 +16,7 @@
 - php artisan storage:link
 
 ```
-sudo chmod -R 777 /var/www/THIS_SITE/{\
+sudo chown -R www-data:www-data /var/www/THIS_SITE/{\
 storage/framework/cache,\
 storage/framework/views,\
 storage/framework/sessions,\
